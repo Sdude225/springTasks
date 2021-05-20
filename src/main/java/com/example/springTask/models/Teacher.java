@@ -1,21 +1,37 @@
 package com.example.springTask.models;
 
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "teacher_flyway", schema = "db_spring")
 public class Teacher {
-    private Integer id;
-    private String name;
-    private String email;
-    private Float salary;
-    private Integer degree;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+
+    @Column(name = "name")
+    private String name;
+    @Column(name = "email")
+    private String email;
+    @Column(name = "salary")
+    private Float salary;
+    @Column(name = "degree")
+    private Integer degree;
+
+    public Teacher() {
+
+    }
+
+    public Teacher(Integer id, String name, String email, Float salary, Integer degree) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.salary = salary;
+        this.degree = degree;
+    }
+
     public Integer getId() {
         return id;
     }

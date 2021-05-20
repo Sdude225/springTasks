@@ -41,7 +41,11 @@ public class StudentController {
     public ResponseEntity<?> update(@RequestBody Student student, @PathVariable Integer id) {
         try {
             Student existingStudent = service.get(id);
-            service.save(student);
+            existingStudent.setName(student.getName());
+            existingStudent.setEmail(student.getEmail());
+            existingStudent.setAverage(student.getAverage());
+            existingStudent.setPhoneNumber(student.getPhoneNumber());
+            service.save(existingStudent);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.BeanUtils;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -41,7 +42,11 @@ public class TeacherController {
     public ResponseEntity<?> update(@RequestBody Teacher teacher, @PathVariable Integer id) {
         try {
             Teacher existingTeacher = service.get(id);
-            service.save(teacher);
+            existingTeacher.setName(teacher.getName());
+            existingTeacher.setEmail(teacher.getEmail());
+            existingTeacher.setSalary(teacher.getSalary());
+            existingTeacher.setDegree(teacher.getDegree());
+            service.save(existingTeacher);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
