@@ -1,5 +1,7 @@
 package com.example.springTask.cotrollers;
 
+import com.example.springTask.dto.StudentDTO;
+import com.example.springTask.mappers.StudentMapper;
 import com.example.springTask.models.Student;
 import com.example.springTask.services.StudentService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -15,6 +17,9 @@ import java.util.NoSuchElementException;
 public class StudentController {
     @Autowired
     private StudentService service;
+
+    @Autowired
+    private StudentMapper studentMapper;
 
     @GetMapping("/students")
     public List<Student> list() {
@@ -38,14 +43,11 @@ public class StudentController {
     }
 
     @PutMapping("/students/{id}")
-    public ResponseEntity<?> update(@RequestBody Student student, @PathVariable Integer id) {
+    public ResponseEntity<?> update(@RequestBody StudentDTO student, @PathVariable Integer id) {
         try {
-            Student existingStudent = service.get(id);
-            existingStudent.setName(student.getName());
-            existingStudent.setEmail(student.getEmail());
-            existingStudent.setAverage(student.getAverage());
-            existingStudent.setPhoneNumber(student.getPhoneNumber());
-            service.save(existingStudent);
+            Student updatedStudent = studentMapper.toStudent(student);
+            updatedStudent.setId(id);
+            service.save(updatedStudent);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
