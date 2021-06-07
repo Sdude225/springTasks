@@ -9,4 +9,5 @@ public class TeacherDTO {
     private String email;
     private Float salary;
     private Integer degree;
+
 }
