@@ -12,6 +12,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class StudentControllerTests extends TestUtils{
@@ -24,57 +29,88 @@ public class StudentControllerTests extends TestUtils{
 
     @Test
     public void validateGetRequest() throws Exception{
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/students")
-                .accept(MediaType.APPLICATION_JSON)).andReturn();
-        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
-
-        Student[] students = super.mapFromJson(mvcResult.getResponse().getContentAsString(), Student[].class);
-        Assertions.assertTrue(students.length > 0);
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/students"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id", is(1)))
+                .andExpect(jsonPath("$[0].name", is("olegr hcanged")))
+                .andExpect(jsonPath("$[0].phoneNumber", is("11111")))
+                .andExpect(jsonPath("$[0].email", is("toleg2@mail.md")))
+                .andExpect(jsonPath("$[0].average", is(5.0)))
+                .andExpect(jsonPath("$[1].id", is(3)))
+                .andExpect(jsonPath("$[1].name", is("testing name cha")))
+                .andExpect(jsonPath("$[1].phoneNumber", is("2222")))
+                .andExpect(jsonPath("$[1].email", is("emailstud@mail.md")))
+                .andExpect(jsonPath("$[1].average", is(99.0)))
+                .andReturn();
     }
 
     @Test
     public void validateSingleGetRequest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/students/1")
-                .accept(MediaType.APPLICATION_JSON)).andReturn();
-        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
-
-        Student student = super.mapFromJson(mvcResult.getResponse().getContentAsString(), Student.class);
-        Assertions.assertEquals("11111", student.getPhoneNumber());
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/students/1"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.name", is("olegr hcanged")))
+                .andExpect(jsonPath("$.phoneNumber", is("11111")))
+                .andExpect(jsonPath("$.email", is("toleg2@mail.md")))
+                .andExpect(jsonPath("$.average", is(5.0)))
+                .andReturn();
     }
 
     @Test
     public void getNotFoundResponse() throws Exception {
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.get("/students/99")
-                .accept(MediaType.APPLICATION_JSON)).andReturn();
-        Assertions.assertEquals(404, mvcResult.getResponse().getStatus());
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn();
     }
 
     @Test
-    public void validateCreateTeacher() throws Exception {
-        Student student = new Student(3, "testing name", "2222", "emailstud@mail.md", 99f);
+    public void validateCreateStudent() throws Exception {
+        Student student = new Student(4, "testing name", "2222", "emailstud@mail.md", 99f);
 
         MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.post("/students")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(super.mapToJson(student))).andReturn();
-
-        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+                .content(super.mapToJson(student)))
+                .andExpect(status().isOk())
+                .andReturn();
     }
 
     @Test
-    public void validatePutTeacher() throws Exception {
-        Student student = new Student(3, "testing name cha", "2222", "emailstud@mail.md", 99f);
+    public void validatePutStudent() throws Exception {
+        Student student = new Student(4, "stud4 name", "33333", "emailstud@mail.md", 99f);
 
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/students/3")
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.put("/students/4")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(super.mapToJson(studentMapper.toStudentDTO(student)))).andReturn();
-
-        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+                .content(super.mapToJson(studentMapper.toStudentDTO(student))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(4)))
+                .andExpect(jsonPath("$.name", is("stud4 name")))
+                .andExpect(jsonPath("$.phoneNumber", is("33333")))
+                .andExpect(jsonPath("$.email", is("emailstud@mail.md")))
+                .andExpect(jsonPath("$.average", is(99.0)))
+                .andReturn();
     }
 
     @Test
-    public void validateDeleteTeacher() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/students/2")).andReturn();
+    public void validateDeleteStudent() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/students/4"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(4)))
+                .andExpect(jsonPath("$.name", is("stud4 name")))
+                .andExpect(jsonPath("$.phoneNumber", is("33333")))
+                .andExpect(jsonPath("$.email", is("emailstud@mail.md")))
+                .andExpect(jsonPath("$.average", is(99.0)))
+                .andReturn();
+    }
 
-        Assertions.assertEquals(200, mvcResult.getResponse().getStatus());
+    @Test
+    public void validateUnexistingDeleteStudent() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders.delete("/students/99").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andReturn();
     }
 }

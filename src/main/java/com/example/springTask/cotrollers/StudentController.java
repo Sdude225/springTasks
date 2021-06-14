@@ -3,6 +3,7 @@ package com.example.springTask.cotrollers;
 import com.example.springTask.dto.StudentDTO;
 import com.example.springTask.mappers.StudentMapper;
 import com.example.springTask.models.Student;
+import com.example.springTask.models.Teacher;
 import com.example.springTask.services.StudentService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +49,22 @@ public class StudentController {
             Student updatedStudent = studentMapper.toStudent(student);
             updatedStudent.setId(id);
             service.save(updatedStudent);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/students/{id}")
-    public void delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            Student student = service.get(id);
+            service.delete(id);
+            return new ResponseEntity(student, HttpStatus.OK);
+        }
+
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
