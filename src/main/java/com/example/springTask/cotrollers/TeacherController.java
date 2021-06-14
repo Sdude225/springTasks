@@ -24,8 +24,14 @@ public class TeacherController {
 
 
     @GetMapping("/teachers")
-    public ResponseEntity<List<Teacher>> list() throws InterruptedException {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<List<Teacher>> list(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy)
+            throws InterruptedException {
+        List<Teacher> list = service.getAll(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<List<Teacher>>(list, HttpStatus.OK);
     }
 
     @GetMapping("/teachers/{id}")

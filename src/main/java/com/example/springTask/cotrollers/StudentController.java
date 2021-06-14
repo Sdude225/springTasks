@@ -23,8 +23,14 @@ public class StudentController {
     private StudentMapper studentMapper;
 
     @GetMapping("/students")
-    public List<Student> list() {
-        return service.getAll();
+    public ResponseEntity<List<Student>> list(
+            @RequestParam(defaultValue = "0") Integer pageNo,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "id") String sortBy
+    ) {
+        List<Student> list = service.getAll(pageNo, pageSize, sortBy);
+
+        return new ResponseEntity<List<Student>>(list, HttpStatus.OK);
     }
 
     @GetMapping("/students/{id}")
