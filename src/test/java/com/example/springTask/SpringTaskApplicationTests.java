@@ -1,17 +1,12 @@
 package com.example.springTask;
 
-import com.example.springTask.dto.TeacherDTO;
-import com.example.springTask.mappers.TeacherMapper;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.function.BooleanSupplier;
-import java.util.stream.Stream;
 
 @SpringBootTest
 class SpringTaskApplicationTests {
@@ -28,9 +23,4 @@ class SpringTaskApplicationTests {
 		}
 
 	}
-
-	@Test
-	void contextLoads() {
-	}
-
 }

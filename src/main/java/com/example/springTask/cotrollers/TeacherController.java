@@ -24,11 +24,12 @@ public class TeacherController {
 
 
     @GetMapping("/teachers")
-    public ResponseEntity<List<Teacher>> list() {
+    public ResponseEntity<List<Teacher>> list() throws InterruptedException {
         return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/teachers/{id}")
+    @ResponseBody
     public ResponseEntity<TeacherDTO> get(@PathVariable Integer id) {
         try {
             Teacher teacher = service.get(id);
@@ -51,14 +52,22 @@ public class TeacherController {
             Teacher updatedTeacher = teacherMapper.toTeacher(teacher);
             updatedTeacher.setId(id);
             service.save(updatedTeacher);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity(updatedTeacher, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/teachers/{id}")
-    public void delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            Teacher teacher = service.get(id);
+            service.delete(id);
+            return new ResponseEntity(teacher, HttpStatus.OK);
+        }
+
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

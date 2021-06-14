@@ -2,11 +2,10 @@ package com.example.springTask;
 
 import com.example.springTask.dto.StudentDTO;
 import com.example.springTask.dto.TeacherDTO;
-import com.example.springTask.mappers.StudentMapperImpl;
-import com.example.springTask.mappers.TeacherMapperImpl;
+import com.example.springTask.mappers.StudentMapper;
+import com.example.springTask.mappers.TeacherMapper;
 import com.example.springTask.models.Student;
 import com.example.springTask.models.Teacher;
-import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class MapperTests {
     @Autowired
-    private TeacherMapperImpl teacherMapper;
+    private TeacherMapper teacherMapper;
 
     @Autowired
-    private StudentMapperImpl studentMapper;
-
-    @Before
-    public void setup() {
-        teacherMapper = new TeacherMapperImpl();
-    }
+    private StudentMapper studentMapper;
 
     @Test
     public void shouldMapTeacherEntityToDTO() {
@@ -32,10 +26,10 @@ public class MapperTests {
 
         TeacherDTO teacherDTO = teacherMapper.toTeacherDTO(teacher);
 
-        Assertions.assertEquals(teacherDTO.getName(), teacher.getName());
-        Assertions.assertEquals(teacherDTO.getEmail(), teacher.getEmail());
-        Assertions.assertEquals(teacherDTO.getSalary(), teacher.getSalary());
-        Assertions.assertEquals(teacherDTO.getDegree(), teacher.getDegree());
+        Assertions.assertEquals(teacherDTO.getName(), "name");
+        Assertions.assertEquals(teacherDTO.getEmail(), "email");
+        Assertions.assertEquals(teacherDTO.getSalary(), 1000f);
+        Assertions.assertEquals(teacherDTO.getDegree(), 2);
     }
 
     @Test
@@ -44,9 +38,9 @@ public class MapperTests {
 
         StudentDTO studentDTO = studentMapper.toStudentDTO(student);
 
-        Assertions.assertEquals(studentDTO.getName(), student.getName());
-        Assertions.assertEquals(studentDTO.getEmail(), student.getEmail());
-        Assertions.assertEquals(studentDTO.getPhoneNumber(), student.getPhoneNumber());
-        Assertions.assertEquals(studentDTO.getAverage(), student.getAverage());
+        Assertions.assertEquals(studentDTO.getName(), "name");
+        Assertions.assertEquals(studentDTO.getEmail(), "email");
+        Assertions.assertEquals(studentDTO.getPhoneNumber(), "06978781");
+        Assertions.assertEquals(studentDTO.getAverage(), 5.5f);
     }
 }
