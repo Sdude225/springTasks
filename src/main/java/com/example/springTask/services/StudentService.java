@@ -19,9 +19,7 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public List<Student> getAll(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable pageable = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
-
+    public List<Student> getAll(Pageable pageable) {
         Page<Student> studentPage = studentRepository.findAll(pageable);
 
         if (studentPage.hasContent())

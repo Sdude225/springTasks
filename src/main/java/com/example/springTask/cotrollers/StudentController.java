@@ -7,6 +7,7 @@ import com.example.springTask.models.Teacher;
 import com.example.springTask.services.StudentService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +24,8 @@ public class StudentController {
     private StudentMapper studentMapper;
 
     @GetMapping("/students")
-    public ResponseEntity<List<Student>> list(
-            @RequestParam(defaultValue = "0") Integer pageNo,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "id") String sortBy
-    ) {
-        List<Student> list = service.getAll(pageNo, pageSize, sortBy);
+    public ResponseEntity<List<Student>> list(Pageable pageable) {
+        List<Student> list = service.getAll(pageable);
 
         return new ResponseEntity<List<Student>>(list, HttpStatus.OK);
     }

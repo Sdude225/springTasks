@@ -20,10 +20,9 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public List<Teacher> getAll(Integer pageNo, Integer pageSize, String sortBy) {
-        Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+    public List<Teacher> getAll(Pageable pageable) {
 
-        Page<Teacher> teacherPage = teacherRepository.findAll(paging);
+        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
 
         if (teacherPage.hasContent())
             return teacherPage.getContent();
