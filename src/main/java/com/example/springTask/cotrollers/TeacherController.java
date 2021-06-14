@@ -1,5 +1,7 @@
 package com.example.springTask.cotrollers;
 
+import com.example.springTask.dto.TeacherDTO;
+import com.example.springTask.mappers.TeacherMapper;
 import com.example.springTask.models.Teacher;
 import com.example.springTask.services.TeacherService;
 import org.apache.commons.validator.routines.EmailValidator;
@@ -16,40 +18,56 @@ public class TeacherController {
     @Autowired
     private TeacherService service;
 
+    @Autowired
+    private TeacherMapper teacherMapper;
+
+
+
     @GetMapping("/teachers")
-    public List<Teacher> list() {
-        return service.getAll();
+    public ResponseEntity<List<Teacher>> list() throws InterruptedException {
+        return ResponseEntity.ok(service.getAll());
     }
 
     @GetMapping("/teachers/{id}")
-    public ResponseEntity<Teacher> get(@PathVariable Integer id) {
+    @ResponseBody
+    public ResponseEntity<TeacherDTO> get(@PathVariable Integer id) {
         try {
             Teacher teacher = service.get(id);
-            return new ResponseEntity<>(teacher, HttpStatus.OK);
+            return new ResponseEntity(teacherMapper.toTeacherDTO(teacher), HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping("/teachers")
-    public void add(@RequestBody Teacher teacher) {
+    public void add(@RequestBody TeacherDTO teacherDTO) {
+        Teacher teacher = teacherMapper.toTeacher(teacherDTO);
         if (EmailValidator.getInstance(true).isValid(teacher.getEmail()))
             service.save(teacher);
     }
 
     @PutMapping("/teachers/{id}")
-    public ResponseEntity<?> update(@RequestBody Teacher teacher, @PathVariable Integer id) {
+    public ResponseEntity<?> update(@RequestBody TeacherDTO teacher, @PathVariable Integer id) {
         try {
-            Teacher existingTeacher = service.get(id);
-            service.save(teacher);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Teacher updatedTeacher = teacherMapper.toTeacher(teacher);
+            updatedTeacher.setId(id);
+            service.save(updatedTeacher);
+            return new ResponseEntity(updatedTeacher, HttpStatus.OK);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @DeleteMapping("/teachers/{id}")
-    public void delete(@PathVariable Integer id) {
-        service.delete(id);
+    public ResponseEntity<?> delete(@PathVariable Integer id) {
+        try {
+            Teacher teacher = service.get(id);
+            service.delete(id);
+            return new ResponseEntity(teacher, HttpStatus.OK);
+        }
+
+        catch (NoSuchElementException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

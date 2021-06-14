@@ -1,16 +1,23 @@
 package com.example.springTask.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+
+import javax.persistence.*;
 
 @Entity
+@Table(name = "student_flyway", schema = "db_spring")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "phone_number")
     private String phoneNumber;
+    @Column(name = "email")
     private String email;
+    @Column(name = "average")
     private Float average;
 
     public Student() {
@@ -24,8 +31,6 @@ public class Student {
         this.average = average;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
