@@ -19,13 +19,13 @@ public class StudentService {
     @Autowired
     private StudentRepository studentRepository;
 
-    public List<Student> getAll(Pageable pageable) {
+    public Page<Student> getAll(Pageable pageable) {
         Page<Student> studentPage = studentRepository.findAll(pageable);
 
         if (studentPage.hasContent())
-            return studentPage.getContent();
+            return studentPage;
         else
-            return new ArrayList<Student>();
+            return Page.empty();
     }
 
     public void save(Student student) {

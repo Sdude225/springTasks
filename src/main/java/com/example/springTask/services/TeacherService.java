@@ -20,14 +20,14 @@ public class TeacherService {
     @Autowired
     private TeacherRepository teacherRepository;
 
-    public List<Teacher> getAll(Pageable pageable) {
+    public Page<Teacher> getAll(Pageable pageable) {
 
         Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
 
         if (teacherPage.hasContent())
-            return teacherPage.getContent();
+            return teacherPage;
         else
-            return new ArrayList<Teacher>();
+            return Page.empty();
     }
 
     public void save(Teacher teacher) {
