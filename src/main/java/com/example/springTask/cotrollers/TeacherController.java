@@ -6,6 +6,8 @@ import com.example.springTask.models.Teacher;
 import com.example.springTask.services.TeacherService;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,11 @@ public class TeacherController {
 
 
     @GetMapping("/teachers")
-    public ResponseEntity<List<Teacher>> list() throws InterruptedException {
-        return ResponseEntity.ok(service.getAll());
+    public ResponseEntity<Page<Teacher>> list(Pageable pageable)
+            throws InterruptedException {
+        Page<Teacher> page = service.getAll(pageable);
+
+        return new ResponseEntity<Page<Teacher>>(page, HttpStatus.OK);
     }
 
     @GetMapping("/teachers/{id}")
