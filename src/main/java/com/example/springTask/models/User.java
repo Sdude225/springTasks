@@ -10,12 +10,16 @@ public class User{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Integer id;
+
     @Column(name = "username")
     private String username;
+
     @Column(name = "password")
     private String password;
+
     @Column(name = "enabled")
-    private boolean enabled;
+    private Boolean enabled;
+
     @Column(name = "role")
     private String role;
 

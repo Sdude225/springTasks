@@ -11,6 +11,8 @@ public class Role {
     @GeneratedValue
     private Long id;
 
+    private String name;
+
     public Role() {
 
     }
@@ -31,6 +33,5 @@ public class Role {
         this.name = name;
     }
 
-    String name;
 
 }

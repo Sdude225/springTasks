@@ -10,13 +10,15 @@ public class Teacher {
     @Column(name = "id")
     private Integer id;
 
-
     @Column(name = "name")
     private String name;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "salary")
     private Float salary;
+
     @Column(name = "degree")
     private Integer degree;
 
