@@ -23,6 +23,17 @@ public class User{
     @Column(name = "role")
     private String role;
 
+    public User() {
+
+    }
+
+    public User(String username, String password, Boolean enabled, String role) {
+        this.username = username;
+        this.password = password;
+        this.enabled = enabled;
+        this.role = role;
+    }
+
     public String getRole() {
         return role;
     }
