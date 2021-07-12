@@ -1,4 +1,4 @@
-package com.example.springTask;
+package com.example.springTask.utility;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;

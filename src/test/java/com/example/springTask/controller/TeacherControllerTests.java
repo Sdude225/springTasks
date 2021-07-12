@@ -1,8 +1,8 @@
-package com.example.springTask;
+package com.example.springTask.controller;
 
+import com.example.springTask.utility.TestUtils;
 import com.example.springTask.mappers.TeacherMapper;
 import com.example.springTask.models.Teacher;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TeacherControllerTests extends TestUtils{
+public class TeacherControllerTests extends TestUtils {
 
     @Autowired
     private MockMvc mockMvc;

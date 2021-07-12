@@ -1,8 +1,8 @@
-package com.example.springTask;
+package com.example.springTask.controller;
 
+import com.example.springTask.utility.TestUtils;
 import com.example.springTask.mappers.StudentMapper;
 import com.example.springTask.models.Student;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StudentControllerTests extends TestUtils{
+public class StudentControllerTests extends TestUtils {
 
     @Autowired
     private MockMvc mockMvc;

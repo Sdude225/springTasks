@@ -11,12 +11,16 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+
     @Column(name = "name")
     private String name;
+
     @Column(name = "phone_number")
     private String phoneNumber;
+
     @Column(name = "email")
     private String email;
+
     @Column(name = "average")
     private Float average;
 
