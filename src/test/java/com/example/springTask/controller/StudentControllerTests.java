@@ -1,4 +1,4 @@
-package com.example.springTask.controllerTests;
+package com.example.springTask.controller;
 
 import com.example.springTask.utility.TestUtils;
 import com.example.springTask.mappers.StudentMapper;

@@ -18,31 +18,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private enum Roles {
-        POWER_USER,
-        TEACHER,
-        STUDENT
-    }
 
     @Autowired
     UserServiceImpl userService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+        httpSecurity
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeRequests().antMatchers("/teachers**", "/students**").hasAuthority(Roles.POWER_USER.name())
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/students**").hasAuthority(Roles.STUDENT.name())
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/students**").hasAuthority(Roles.TEACHER.name())
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.GET, "/teachers**").hasAuthority(Roles.TEACHER.name())
-                .and()
-                .authorizeRequests().antMatchers(HttpMethod.POST, "/students**").hasAuthority(Roles.TEACHER.name())
-                .and()
-                .authorizeRequests().antMatchers("/oauth/token")
-                .permitAll().anyRequest().authenticated();
+                .authorizeRequests().antMatchers("/oauth/token").permitAll().anyRequest().fullyAuthenticated();
 
     }
 

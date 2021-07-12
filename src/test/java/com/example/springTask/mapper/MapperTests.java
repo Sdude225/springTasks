@@ -1,4 +1,4 @@
-package com.example.springTask.mapperTests;
+package com.example.springTask.mapper;
 
 import com.example.springTask.dto.StudentDTO;
 import com.example.springTask.dto.TeacherDTO;
